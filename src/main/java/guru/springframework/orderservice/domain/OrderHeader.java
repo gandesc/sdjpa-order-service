@@ -1,24 +1,19 @@
 package guru.springframework.orderservice.domain;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
-public class OrderHeader {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+public class OrderHeader extends BaseEntity {
 
   private String customerName;
-
 }
