@@ -5,6 +5,8 @@ import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -58,4 +60,6 @@ public class OrderHeader extends BaseEntity {
   private Address billToAddress;
   @Embedded
   private Address shippingAddress;
+  @Enumerated(EnumType.STRING)
+  private OrderStatus orderStatus;
 }
