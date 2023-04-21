@@ -20,7 +20,22 @@ public class SdjpaOrderHeaderRepositoryTest {
   OrderHeaderRepository repository;
 
   @Test
-  void testOrderSave() {
+  void testSaveOrder() {
+    OrderHeader entity = OrderHeader.builder().customerName("New Customer").build();
+    OrderHeader savedOrder = repository.save(entity);
+
+    assertThat(savedOrder).isNotNull();
+    assertThat(savedOrder.getId()).isNotNull();
+
+    OrderHeader fetchedOrder = repository.findById(savedOrder.getId()).orElse(null);
+
+    assertThat(fetchedOrder).isNotNull();
+    assertThat(fetchedOrder.getId()).isNotNull();
+    assertThat(fetchedOrder.getCreatedDate()).isNotNull();
+  }
+
+  @Test
+  void testFindAllByName() {
     OrderHeader entity = OrderHeader.builder().customerName("test").build();
     OrderHeader savedOrder = repository.save(entity);
 
