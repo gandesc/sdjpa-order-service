@@ -32,6 +32,7 @@ public class SdjpaOrderHeaderRepositoryTest {
     assertThat(fetchedOrder).isNotNull();
     assertThat(fetchedOrder.getId()).isNotNull();
     assertThat(fetchedOrder.getCreatedDate()).isNotNull();
+    assertThat(fetchedOrder.getLastModifiedDate()).isNotNull();
   }
 
   @Test
