@@ -21,17 +21,17 @@ public class SdjpaProductRepositoryTest {
 
   @Test
   void testSaveProduct() {
-    Product product = Product.builder()
+    Product savedProduct = Product.builder()
         .description("new")
         .productStatus(ProductStatus.NEW)
         .build();
 
-    product = productRepository.save(product);
+    savedProduct = productRepository.save(savedProduct);
 
-    Product fetched = productRepository.getReferenceById(product.getId());
+    Product fetchedProduct = productRepository.getReferenceById(savedProduct.getId());
 
-    assertThat(fetched).isNotNull();
-    assertThat(fetched.getDescription()).isEqualTo(product.getDescription());
-    assertThat(fetched.getProductStatus()).isEqualTo(product.getProductStatus());
+    assertThat(fetchedProduct).isNotNull();
+    assertThat(fetchedProduct.getDescription()).isEqualTo(savedProduct.getDescription());
+    assertThat(fetchedProduct.getProductStatus()).isEqualTo(savedProduct.getProductStatus());
   }
 }
