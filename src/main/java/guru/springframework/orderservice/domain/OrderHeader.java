@@ -7,11 +7,14 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -56,10 +59,16 @@ import lombok.NoArgsConstructor;
 public class OrderHeader extends BaseEntity {
 
   private String customerName;
+
   @Embedded
   private Address billToAddress;
+
   @Embedded
   private Address shippingAddress;
+
   @Enumerated(EnumType.STRING)
   private OrderStatus orderStatus;
+
+  @OneToMany(mappedBy = "orderHeader")
+  private Set<OrderLine> orderLines;
 }
