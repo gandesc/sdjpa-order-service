@@ -29,13 +29,12 @@ public class SdjpaOrderHeaderRepositoryTest {
     OrderLine orderLine = OrderLine.builder().quantityOrdered(5).build();
 
     entity.setOrderLines(Set.of(orderLine));
-    orderLine.setOrderHeader(entity);
+//    orderLine.setOrderHeader(entity);
 
     OrderHeader savedOrder = repository.save(entity);
 
     assertThat(savedOrder).isNotNull();
     assertThat(savedOrder.getId()).isNotNull();
-    assertEquals(savedOrder.getOrderLines().size(), 1);
 
     OrderHeader fetchedOrder = repository.findById(savedOrder.getId()).orElse(null);
 
@@ -43,6 +42,7 @@ public class SdjpaOrderHeaderRepositoryTest {
     assertThat(fetchedOrder.getId()).isNotNull();
     assertThat(fetchedOrder.getCreatedDate()).isNotNull();
     assertThat(fetchedOrder.getLastModifiedDate()).isNotNull();
+    assertEquals(fetchedOrder.getOrderLines().size(), 1);
   }
   @Test
   void testSaveOrder() {
