@@ -5,8 +5,9 @@ import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,6 +19,9 @@ public class OrderLine extends BaseEntity {
 
   @ManyToOne
   private OrderHeader orderHeader;
+
+  @ManyToOne
+  private Product product;
 
   @Override
   public boolean equals(Object o) {
@@ -31,16 +35,20 @@ public class OrderLine extends BaseEntity {
       return false;
     }
 
-    if (!quantityOrdered.equals(orderLine.quantityOrdered)) {
+    if (!Objects.equals(quantityOrdered, orderLine.quantityOrdered)) {
       return false;
     }
-    return orderHeader.equals(orderLine.orderHeader);
+    if (!Objects.equals(orderHeader, orderLine.orderHeader)) {
+      return false;
+    }
+    return Objects.equals(product, orderLine.product);
   }
 
   @Override
   public int hashCode() {
     int result = super.hashCode();
-    result = 31 * result + quantityOrdered.hashCode();
+    result = 31 * result + (quantityOrdered != null ? quantityOrdered.hashCode() : 0);
+    result = 31 * result + (product != null ? product.hashCode() : 0);
     return result;
   }
 }

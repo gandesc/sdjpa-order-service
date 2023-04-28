@@ -2,7 +2,11 @@ package guru.springframework.orderservice;
 
 import guru.springframework.orderservice.domain.OrderHeader;
 import guru.springframework.orderservice.domain.OrderLine;
+import guru.springframework.orderservice.domain.Product;
+import guru.springframework.orderservice.domain.ProductStatus;
 import guru.springframework.orderservice.repositories.OrderHeaderRepository;
+import guru.springframework.orderservice.repositories.ProductRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -22,11 +26,26 @@ public class SdjpaOrderHeaderRepositoryTest {
   @Autowired
   OrderHeaderRepository repository;
 
+  @Autowired
+  ProductRepository productRepository;
+
+  Product product;
+
+  @BeforeEach
+  void setUp() {
+    product = Product.builder()
+        .productStatus(ProductStatus.NEW)
+        .description("test product")
+        .build();
+
+    productRepository.save(product);
+  }
+
   @Test
   void testSaveOrderWithLine() {
     OrderHeader entity = OrderHeader.builder().customerName("New Customer").build();
 
-    OrderLine orderLine = OrderLine.builder().quantityOrdered(5).build();
+    OrderLine orderLine = OrderLine.builder().product(product).quantityOrdered(5).build();
 
     entity.setOrderLines(Set.of(orderLine));
 //    orderLine.setOrderHeader(entity);
@@ -43,6 +62,7 @@ public class SdjpaOrderHeaderRepositoryTest {
     assertThat(fetchedOrder.getCreatedDate()).isNotNull();
     assertThat(fetchedOrder.getLastModifiedDate()).isNotNull();
     assertEquals(fetchedOrder.getOrderLines().size(), 1);
+    assertThat(fetchedOrder.getOrderLines().stream().findFirst().get().getProduct()).isNotNull();
   }
   @Test
   void testSaveOrder() {
