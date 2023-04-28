@@ -43,14 +43,13 @@ public class SdjpaOrderHeaderRepositoryTest {
 
   @Test
   void testSaveOrderWithLine() {
-    OrderHeader entity = OrderHeader.builder().customerName("New Customer").build();
+    OrderHeader orderHeader = OrderHeader.builder().customerName("New Customer").build();
 
     OrderLine orderLine = OrderLine.builder().product(product).quantityOrdered(5).build();
 
-    entity.setOrderLines(Set.of(orderLine));
-//    orderLine.setOrderHeader(entity);
+    orderHeader.addOrderLine(orderLine);
 
-    OrderHeader savedOrder = repository.save(entity);
+    OrderHeader savedOrder = repository.save(orderHeader);
 
     assertThat(savedOrder).isNotNull();
     assertThat(savedOrder.getId()).isNotNull();
