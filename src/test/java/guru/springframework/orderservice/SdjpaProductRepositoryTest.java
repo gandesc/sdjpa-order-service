@@ -20,6 +20,14 @@ public class SdjpaProductRepositoryTest {
   ProductRepository productRepository;
 
   @Test
+  void testGetCategory() {
+    Product product = productRepository.findByDescription("PRODUCT1");
+
+    assertThat(product).isNotNull();
+    assertThat(product.getCategories().size()).isEqualTo(2);
+  }
+
+  @Test
   void testSaveProduct() {
     Product savedProduct = Product.builder()
         .description("new")
