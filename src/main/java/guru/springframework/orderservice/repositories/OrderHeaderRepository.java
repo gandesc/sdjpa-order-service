@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface OrderHeaderRepository extends JpaRepository<OrderHeader, Long> {
 
-  List<OrderHeader> findAllByCustomerName(String name);
+//  List<OrderHeader> findAllByCustomerName(String name);
 }

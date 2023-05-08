@@ -8,7 +8,9 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -60,8 +62,6 @@ import java.util.Set;
 })
 public class OrderHeader extends BaseEntity {
 
-  private String customerName;
-
   @Embedded
   private Address billToAddress;
 
@@ -73,6 +73,9 @@ public class OrderHeader extends BaseEntity {
 
   @OneToMany(mappedBy = "orderHeader", cascade = CascadeType.PERSIST)
   private Set<OrderLine> orderLines;
+
+  @ManyToOne
+  private Customer customer;
 
   public void addOrderLine(OrderLine orderLine) {
     if (orderLines == null) {
