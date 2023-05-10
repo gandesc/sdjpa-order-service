@@ -1,11 +1,13 @@
 package guru.springframework.orderservice;
 
 import guru.springframework.orderservice.domain.Customer;
+import guru.springframework.orderservice.domain.OrderApproval;
 import guru.springframework.orderservice.domain.OrderHeader;
 import guru.springframework.orderservice.domain.OrderLine;
 import guru.springframework.orderservice.domain.Product;
 import guru.springframework.orderservice.domain.ProductStatus;
 import guru.springframework.orderservice.repositories.CustomerRepository;
+import guru.springframework.orderservice.repositories.OrderApprovalRepository;
 import guru.springframework.orderservice.repositories.OrderHeaderRepository;
 import guru.springframework.orderservice.repositories.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,6 +32,9 @@ public class SdjpaOrderHeaderRepositoryTest {
 
   @Autowired
   CustomerRepository customerRepository;
+
+  @Autowired
+  OrderApprovalRepository approvalRepository;
 
   @Autowired
   ProductRepository productRepository;
@@ -77,7 +82,13 @@ public class SdjpaOrderHeaderRepositoryTest {
     Customer customer = Customer.builder().customerName("New Customer").build();
     customerRepository.save(customer);
 
-    OrderHeader entity = OrderHeader.builder().customer(customer).build();
+    OrderApproval approval = OrderApproval.builder().approved_by("me").build();
+    approvalRepository.save(approval);
+
+    OrderHeader entity = OrderHeader.builder()
+        .customer(customer)
+        .orderApproval(approval)
+        .build();
     OrderHeader savedOrder = repository.save(entity);
 
     assertThat(savedOrder).isNotNull();
@@ -90,6 +101,7 @@ public class SdjpaOrderHeaderRepositoryTest {
     assertThat(fetchedOrder.getCreatedDate()).isNotNull();
     assertThat(fetchedOrder.getLastModifiedDate()).isNotNull();
     assertThat(fetchedOrder.getCustomer().getId()).isNotNull();
+    assertThat(fetchedOrder.getOrderApproval().getId()).isNotNull();
   }
 
   @Test
