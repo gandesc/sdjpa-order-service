@@ -83,7 +83,6 @@ public class SdjpaOrderHeaderRepositoryTest {
     customerRepository.save(customer);
 
     OrderApproval approval = OrderApproval.builder().approved_by("me").build();
-    approvalRepository.save(approval);
 
     OrderHeader entity = OrderHeader.builder()
         .customer(customer)
