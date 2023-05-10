@@ -10,11 +10,13 @@ import guru.springframework.orderservice.repositories.CustomerRepository;
 import guru.springframework.orderservice.repositories.OrderApprovalRepository;
 import guru.springframework.orderservice.repositories.OrderHeaderRepository;
 import guru.springframework.orderservice.repositories.ProductRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
@@ -22,6 +24,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ActiveProfiles("local")
 @DataJpaTest
@@ -101,6 +104,28 @@ public class SdjpaOrderHeaderRepositoryTest {
     assertThat(fetchedOrder.getLastModifiedDate()).isNotNull();
     assertThat(fetchedOrder.getCustomer().getId()).isNotNull();
     assertThat(fetchedOrder.getOrderApproval().getId()).isNotNull();
+  }
+
+  @Test
+  void testDeleteCascade() {
+    OrderLine orderLine = OrderLine.builder().product(product).quantityOrdered(1).build();
+
+    OrderHeader orderHeader = OrderHeader.builder().build();
+    orderHeader.addOrderLine(orderLine);
+
+    repository.save(orderHeader);
+
+    assertThat(orderHeader.getId()).isNotNull();
+    assertThat(orderHeader.getOrderLines().stream().findFirst().get().getId()).isNotNull();
+
+    repository.deleteById(orderHeader.getId());
+    repository.flush();
+
+    assertThrows(EntityNotFoundException.class, () -> {
+      OrderHeader fetchedOrder = repository.getById(orderHeader.getId());
+
+      assertThat(fetchedOrder).isNull();
+    });
   }
 
   @Test
