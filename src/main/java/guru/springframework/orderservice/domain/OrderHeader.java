@@ -77,7 +77,7 @@ public class OrderHeader extends BaseEntity {
   @ManyToOne
   private Customer customer;
 
-  @OneToOne(cascade = CascadeType.PERSIST)
+  @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = true)
   private OrderApproval orderApproval;
 
   public void addOrderLine(OrderLine orderLine) {

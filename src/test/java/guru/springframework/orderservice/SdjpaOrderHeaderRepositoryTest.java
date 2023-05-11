@@ -109,14 +109,19 @@ public class SdjpaOrderHeaderRepositoryTest {
   @Test
   void testDeleteCascade() {
     OrderLine orderLine = OrderLine.builder().product(product).quantityOrdered(1).build();
+    OrderApproval approval = OrderApproval.builder().approved_by("me").build();
 
     OrderHeader orderHeader = OrderHeader.builder().build();
     orderHeader.addOrderLine(orderLine);
+    orderHeader.setOrderApproval(approval);
 
     repository.save(orderHeader);
 
     assertThat(orderHeader.getId()).isNotNull();
+    assertThat(orderHeader.getOrderApproval().getId()).isNotNull();
     assertThat(orderHeader.getOrderLines().stream().findFirst().get().getId()).isNotNull();
+
+
 
     repository.deleteById(orderHeader.getId());
     repository.flush();
