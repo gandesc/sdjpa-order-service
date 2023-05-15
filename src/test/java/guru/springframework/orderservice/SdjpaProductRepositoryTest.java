@@ -21,7 +21,7 @@ public class SdjpaProductRepositoryTest {
 
   @Test
   void testGetCategory() {
-    Product product = productRepository.findByDescription("PRODUCT1");
+    Product product = productRepository.findByDescription("PRODUCT1").get();
 
     assertThat(product).isNotNull();
     assertThat(product.getCategories().size()).isEqualTo(2);
