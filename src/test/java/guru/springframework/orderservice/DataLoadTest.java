@@ -69,7 +69,8 @@ public class DataLoadTest {
           .quantityOrdered(random.nextInt(20))
           .build();
 
-      orderHeader.getOrderLines().add(orderLine);
+//      orderHeader.getOrderLines().add(orderLine);
+      orderHeader.addOrderLine(orderLine);
     });
 
     return orderHeaderRepository.save(orderHeader);
