@@ -1,6 +1,7 @@
 package guru.springframework.orderservice.domain;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +18,7 @@ import java.util.Objects;
 public class OrderLine extends BaseEntity {
   private Integer quantityOrdered;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   private OrderHeader orderHeader;
 
   @ManyToOne
