@@ -9,7 +9,6 @@ import guru.springframework.orderservice.domain.ProductStatus;
 import guru.springframework.orderservice.repositories.CustomerRepository;
 import guru.springframework.orderservice.repositories.OrderHeaderRepository;
 import guru.springframework.orderservice.repositories.ProductRepository;
-import org.aspectj.weaver.ast.Or;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +42,24 @@ public class DataLoadTest {
   OrderHeaderRepository orderHeaderRepository;
 
   @Test
-  void testN_plus_one() {
+  void testDbLock() {
+    Long id = 1L;
+
+    OrderHeader orderHeader = orderHeaderRepository.findById(id).get();
+
+    Address billTo = Address.builder()
+        .address("Bill me")
+        .build();
+
+    orderHeader.setBillToAddress(billTo);
+
+    orderHeaderRepository.saveAndFlush(orderHeader);
+
+    System.out.println("I updated the order");
+  }
+
+  @Test
+  void testN_PlusOneProblem() {
     Customer customer = customerRepository
         .findCustomerByCustomerNameIgnoreCase(TEST_CUSTOMER)
         .get();
