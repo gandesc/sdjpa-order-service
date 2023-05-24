@@ -18,7 +18,7 @@ import java.util.Objects;
 public class OrderLine extends BaseEntity {
   private Integer quantityOrdered;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne
   private OrderHeader orderHeader;
 
   @ManyToOne
