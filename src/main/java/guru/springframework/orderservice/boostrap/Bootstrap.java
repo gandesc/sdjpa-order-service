@@ -12,19 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class Bootstrap implements CommandLineRunner {
 
   @Autowired
-  private OrderHeaderRepository repository;
+  private BootstrapOrderService service;
 
-  @Transactional
   @Override
   public void run(String... args) throws Exception {
-    OrderHeader orderHeader = repository.findById(1L).get();
-
-    orderHeader.getOrderLines().forEach(ol -> {
-      System.out.println(ol.getProduct().getDescription());
-
-      ol.getProduct().getCategories().forEach(cat -> {
-        System.out.println(cat.getDescription());
-      });
-    });
+    service.readOrderData();
   }
 }
