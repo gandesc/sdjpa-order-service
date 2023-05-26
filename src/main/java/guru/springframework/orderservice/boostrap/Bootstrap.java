@@ -23,11 +23,21 @@ public class Bootstrap implements CommandLineRunner {
   public void run(String... args) throws Exception {
     service.readOrderData();
 
-    Customer customer = Customer.builder().customerName("new").build();
+    Customer customer = Customer.builder()
+        .customerName("Testing Version")
+        .build();
 
-    repository.save(customer);
+    Customer customer1 = repository.save(customer);
+    System.out.println("Version is: " + customer.getVersion());
 
-    System.out.println(customer.getVersion());
-    repository.delete(customer);
+    customer1.setCustomerName("Testing Version 2");
+    Customer customer2 = repository.save(customer1);
+    System.out.println(customer2.getVersion());
+
+    customer2.setCustomerName("Testing Version 3");
+    Customer customer3 = repository.save(customer2);
+    System.out.println(customer3.getVersion());
+
+    repository.delete(customer3);
   }
 }
