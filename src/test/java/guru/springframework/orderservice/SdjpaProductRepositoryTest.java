@@ -20,6 +20,23 @@ public class SdjpaProductRepositoryTest {
   ProductRepository productRepository;
 
   @Test
+  void addAndUpdateProduct() {
+    Product product = Product.builder()
+        .description("New Product")
+        .quantityOnHand(5)
+        .productStatus(ProductStatus.NEW)
+        .build();
+
+    Product savedProduct = productRepository.save(product);
+
+    savedProduct.setQuantityOnHand(15);
+
+    Product savedProduct2 = productRepository.saveAndFlush(savedProduct);
+
+    assertThat(savedProduct2.getQuantityOnHand()).isEqualTo(15);
+  }
+
+  @Test
   void testGetCategory() {
     Product product = productRepository.findByDescription("PRODUCT1").get();
 

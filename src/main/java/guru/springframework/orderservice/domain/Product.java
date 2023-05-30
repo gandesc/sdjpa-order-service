@@ -24,6 +24,8 @@ import java.util.Set;
 public class Product extends BaseEntity {
   private String description;
 
+  private Integer quantityOnHand;
+
   @Enumerated(EnumType.STRING)
   private ProductStatus productStatus;
 
