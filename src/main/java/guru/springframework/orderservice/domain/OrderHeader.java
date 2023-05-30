@@ -12,6 +12,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -73,6 +74,9 @@ public class OrderHeader extends BaseEntity {
 
   @Enumerated(EnumType.STRING)
   private OrderStatus orderStatus;
+
+  @Version
+  private Integer version;
 
   @OneToMany(
       mappedBy = "orderHeader",
