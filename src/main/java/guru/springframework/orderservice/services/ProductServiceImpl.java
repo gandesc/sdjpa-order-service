@@ -4,6 +4,7 @@ import guru.springframework.orderservice.domain.Product;
 import guru.springframework.orderservice.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
