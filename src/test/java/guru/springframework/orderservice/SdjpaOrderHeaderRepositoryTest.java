@@ -1,11 +1,6 @@
 package guru.springframework.orderservice;
 
-import guru.springframework.orderservice.domain.Customer;
-import guru.springframework.orderservice.domain.OrderApproval;
-import guru.springframework.orderservice.domain.OrderHeader;
-import guru.springframework.orderservice.domain.OrderLine;
-import guru.springframework.orderservice.domain.Product;
-import guru.springframework.orderservice.domain.ProductStatus;
+import guru.springframework.orderservice.domain.*;
 import guru.springframework.orderservice.repositories.CustomerRepository;
 import guru.springframework.orderservice.repositories.OrderApprovalRepository;
 import guru.springframework.orderservice.repositories.OrderHeaderRepository;
@@ -82,7 +77,11 @@ public class SdjpaOrderHeaderRepositoryTest {
   }
   @Test
   void testSaveOrder() {
-    Customer customer = Customer.builder().customerName("New Customer").build();
+    Address address = Address.builder().city("012345678").build();
+    Customer customer = Customer.builder()
+            .customerName("New Customer")
+            .address(address)
+            .build();
     customerRepository.save(customer);
 
     OrderApproval approval = OrderApproval.builder().approved_by("me").build();
