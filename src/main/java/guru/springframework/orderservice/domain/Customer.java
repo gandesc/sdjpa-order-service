@@ -5,12 +5,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Version;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,10 +24,12 @@ import java.util.Set;
 @Entity
 public class Customer extends BaseEntity {
 
-  @Length(max = 50)
+  @Size(max = 50)
   private String customerName;
-  @Length(max = 20)
+  @Size(max = 20)
   private String phone;
+  @Size(max = 255)
+  @Email
   private String email;
 
   @Version

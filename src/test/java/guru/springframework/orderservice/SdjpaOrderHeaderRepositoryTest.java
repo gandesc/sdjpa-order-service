@@ -6,6 +6,8 @@ import guru.springframework.orderservice.repositories.OrderApprovalRepository;
 import guru.springframework.orderservice.repositories.OrderHeaderRepository;
 import guru.springframework.orderservice.repositories.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolationException;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +15,13 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("local")
 @DataJpaTest
@@ -103,6 +105,29 @@ public class SdjpaOrderHeaderRepositoryTest {
     assertThat(fetchedOrder.getLastModifiedDate()).isNotNull();
     assertThat(fetchedOrder.getCustomer().getId()).isNotNull();
     assertThat(fetchedOrder.getOrderApproval().getId()).isNotNull();
+  }
+
+  @Test
+  void testCustomerValidations() {
+    Address address = Address.builder()
+            .address(RandomStringUtils.random(31))
+            .city(RandomStringUtils.random(31))
+            .state(RandomStringUtils.random(31))
+            .zipCode(RandomStringUtils.random(31))
+            .build();
+
+    Customer customer = Customer.builder()
+            .customerName(RandomStringUtils.random(51))
+            .address(address)
+            .email("fake.email")
+            .build();
+
+    ConstraintViolationException ex = assertThrows(
+            ConstraintViolationException.class,
+            () -> customerRepository.save(customer));
+
+    assertThat(customer).isNotNull();
+    assertThat(customer.getId()).isNull();
   }
 
   @Test
